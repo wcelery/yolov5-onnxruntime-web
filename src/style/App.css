@@ -1,5 +1,4 @@
 .App {
-  height: 100vh;
   padding: 0 10px;
   display: flex;
   flex-direction: column;
@@ -26,11 +25,9 @@
   border-radius: 5px;
 }
 
-.content > img {
-  width: 100%;
-  max-width: 720px;
-  max-height: 500px;
-  border-radius: 10px;
+.content > img,
+#textractCanvas {
+  display: none !important;
 }
 
 .content {

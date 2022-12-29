@@ -1,0 +1,9 @@
+export const appConfig = {
+  MODEL_NAME: "best_26.12.onnx",
+  MODEL_INPUT_SHAPE: [1, 3, 1024, 1024],
+  BIG_IMAGE_SIZE: 0.25,
+  SMALL_IMAGE_SIZE: 1024,
+  IOU_THRES: 0.45,
+  MIN_CONFIDENCE: 0.1,
+  NMS_MAX_BOXES: 1000,
+};

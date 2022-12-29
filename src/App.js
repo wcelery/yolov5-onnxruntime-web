@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Tensor, InferenceSession } from "onnxruntime-web";
 import Loader from "./components/loader";
-import { detectImage } from "./utils/detect";
+import { detectImage } from "./utils/inference";
 import "./style/App.css";
+import { appConfig } from "./appConfig";
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -10,17 +11,19 @@ const App = () => {
   const [image, setImage] = useState(null);
   const inputImage = useRef(null);
   const imageRef = useRef(null);
-  const canvasRef = useRef(null);
+  const imageCanvasRef = useRef(null);
+  const textractCanvasRef = useRef(null);
 
   // configs
-  const modelName = "yolov7-tiny.onnx";
-  const modelInputShape = [1, 3, 640, 640];
-  const classThreshold = 0.2;
+  const modelName = appConfig.MODEL_NAME;
+  const modelInputShape = appConfig.MODEL_INPUT_SHAPE;
 
   cv["onRuntimeInitialized"] = async () => {
     // create session
-    setLoading("Loading YOLOv7 model...");
-    const yolov7 = await InferenceSession.create(`${process.env.PUBLIC_URL}/model/${modelName}`);
+    setLoading("Loading YOLOv5 model...");
+    const yolov5 = await InferenceSession.create(
+      `${process.env.PUBLIC_URL}/model/${modelName}`
+    );
 
     // warmup model
     setLoading("Warming up model...");
@@ -29,9 +32,9 @@ const App = () => {
       new Float32Array(modelInputShape.reduce((a, b) => a * b)),
       modelInputShape
     );
-    await yolov7.run({ images: tensor });
+    await yolov5.run({ images: tensor });
 
-    setSession(yolov7);
+    setSession(yolov5);
     setLoading(false);
   };
 
@@ -39,9 +42,9 @@ const App = () => {
     <div className="App">
       {loading && <Loader>{loading}</Loader>}
       <div className="header">
-        <h1>YOLOv7 Object Detection App</h1>
+        <h1>Object Detection App</h1>
         <p>
-          YOLOv7 object detection application live on browser powered by{" "}
+          Object detection application live on browser powered by{" "}
           <code>onnxruntime-web</code>
         </p>
         <p>
@@ -50,6 +53,7 @@ const App = () => {
       </div>
       <div className="content">
         <img
+          id="test"
           ref={imageRef}
           src="#"
           alt=""
@@ -57,20 +61,16 @@ const App = () => {
           onLoad={() => {
             detectImage(
               imageRef.current,
-              canvasRef.current,
+              imageCanvasRef.current,
+              textractCanvasRef.current,
               session,
-              classThreshold,
               modelInputShape
             );
           }}
         />
-        <canvas
-          id="canvas"
-          width={modelInputShape[2]}
-          height={modelInputShape[3]}
-          ref={canvasRef}
-        />
       </div>
+      <canvas id="imageCanvas" ref={imageCanvasRef} />
+      <canvas id="textractCanvas" ref={textractCanvasRef} />
 
       <input
         type="file"
