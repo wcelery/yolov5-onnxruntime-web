@@ -24,12 +24,12 @@ export const renderBoxes = async (canvasRef, boxes) => {
 
     // get response from textract
     const res = await box.textractRequest;
-    const foundLabel = res.filter((text) => {
-      return blueprintLabels.includes(text.toLowerCase());
-    });
+    const foundLabels = res.filter((text) =>
+      blueprintLabels.some((label) => text.toLowerCase().includes(label))
+    );
 
     // we can't change the color of the rect, so we have to redraw it on top of old rect
-    if (foundLabel.length > 0) {
+    if (foundLabels.length > 0) {
       ctx.fillStyle = hexToRgba(GREEN, 0.001);
       ctx.fillRect(x1, y1, width, height);
       // draw border box
