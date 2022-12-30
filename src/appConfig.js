@@ -6,4 +6,10 @@ export const appConfig = {
   IOU_THRES: 0.45,
   MIN_CONFIDENCE: 0.3,
   NMS_MAX_BOXES: 1000,
+
+  // TEXTBOX CONFIG
+
+  X_FRAME: 0.01,
+  TOP_FRAME: 0.02,
+  BOTTOM_FRAME: 0.03,
 };
