@@ -27,14 +27,17 @@ export const detectImage = async (
     mat.cols * appConfig.BIG_IMAGE_SIZE,
     mat.rows * appConfig.BIG_IMAGE_SIZE
   );
-  const smallSize = new cv.Size(appConfig.SMALL_IMAGE_SIZE, appConfig.SMALL_IMAGE_SIZE);
+  const coef = mat.cols / appConfig.SMALL_IMAGE_SIZE;
+  const smallSize = new cv.Size(appConfig.SMALL_IMAGE_SIZE, appConfig.SMALL_IMAGE_SIZE); // 640 x 640
+  const smallSize1 = new cv.Size(appConfig.SMALL_IMAGE_SIZE, mat.rows / coef); // 640 x (7201 * coef = ~426)
 
-  cv.resize(mat, matBig, bigSize, 0, 0, cv.INTER_LINEAR);
+  cv.resize(mat, matBig, bigSize, 0, 0, cv.INTER_AREA);
   cv.cvtColor(matBig, matBig, cv.COLOR_BGR2RGB);
   const h0 = matBig.rows;
   const w0 = matBig.cols;
 
-  cv.resize(matBig, matSmall, smallSize, 0, 0, cv.INTER_LINEAR);
+  cv.resize(matBig, matSmall, smallSize1, 0, 0, cv.INTER_AREA); // resize big image to 640 x 426
+  cv.resize(matSmall, matSmall, smallSize, 0, 0, cv.INTER_AREA); // resize small (640 x 426) image to 640 x 640
 
   const h = matSmall.rows;
   const w = matSmall.cols;

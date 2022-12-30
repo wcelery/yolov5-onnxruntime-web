@@ -1,7 +1,7 @@
 export const appConfig = {
   MODEL_NAME: "best_29.12.onnx",
   MODEL_INPUT_SHAPE: [1, 3, 640, 640],
-  BIG_IMAGE_SIZE: 0.25,
+  BIG_IMAGE_SIZE: 0.2,
   SMALL_IMAGE_SIZE: 640,
   IOU_THRES: 0.45,
   MIN_CONFIDENCE: 0.3,
