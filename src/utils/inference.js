@@ -97,11 +97,22 @@ export const detectImage = async (
     const rectHeight = parseInt((h / appConfig.SMALL_IMAGE_SIZE) * h0);
 
     // calculate coordinates for table title box
-    let x0_ = parseInt(topLeftX - 0.005 * w0) < 0 ? 0 : parseInt(topLeftX - 0.005 * w0);
-    let y0_ = parseInt(topLeftY - 0.02 * h0) < 0 ? 0 : parseInt(topLeftY - 0.02 * h0);
+    let x0_ =
+      parseInt(topLeftX - appConfig.X_FRAME * w0) < 0
+        ? 0
+        : parseInt(topLeftX - appConfig.X_FRAME * w0);
+    let y0_ =
+      parseInt(topLeftY - appConfig.TOP_FRAME * h0) < 0
+        ? 0
+        : parseInt(topLeftY - appConfig.TOP_FRAME * h0);
     let x1_ =
-      parseInt(bottomRightX + 0.005 * w0) > w0 ? w0 : parseInt(bottomRightX + 0.005 * w0);
-    let y1_ = parseInt(topLeftY + 0.03 * h0) > h0 ? h0 : parseInt(topLeftY + 0.03 * h0);
+      parseInt(bottomRightX + appConfig.X_FRAME * w0) > w0
+        ? w0
+        : parseInt(bottomRightX + appConfig.X_FRAME * w0);
+    let y1_ =
+      parseInt(topLeftY + appConfig.BOTTOM_FRAME * h0) > h0
+        ? h0
+        : parseInt(topLeftY + appConfig.BOTTOM_FRAME * h0);
 
     boxes.push({
       bounding: [topLeftX, topLeftY, rectWidth, rectHeight],
